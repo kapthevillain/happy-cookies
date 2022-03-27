@@ -1,0 +1,79 @@
+# import * from './generated/prisma.graphql'
+
+type SuccessMessage {
+  message: String
+}
+
+# TODO: create success message string type for delete mutation
+type Mutation {
+  createItem(title: String, description: String, price: Int, image: String, largeImage: String, cbdType: Extract, tags: [Tag]): Item!
+  updateItem(id: ID!, title: String, description: String, price: Int, cbdType: Extract, tags: [Tag]) : Item!
+  deleteItem(id: ID!): Item
+  signUp(email: String!, password: String!, name: String!): User!
+  signIn(email: String!, password: String!): User!
+  signOut: SuccessMessage
+  requestReset(email: String!): SuccessMessage
+  resetPassword(resetToken: String!, password: String!, confirmPassword: String!): User!
+  updatePermissions(permissions: [Permission], userId: ID!): User
+  addToCart(id: ID! ): CartItem
+  removeFromCart(id: ID! ): CartItem
+  createOrder(token: String!): Order!
+
+  vendorSignUp(companyName: String!, zipCode: Int!, name: String!, email: String!, password: String!): Vendor!
+  vendorSignIn(email: String!, password: String!): Vendor!
+}
+
+type Query {
+  items(where: ItemWhereInput, orderBy: ItemOrderByInput, skip: Int, first: Int): [Item]!
+  item(where: ItemWhereUniqueInput!): Item
+  itemsConnection(where: ItemWhereUniqueInput): ItemConnection!
+  me: User
+  users: [User]!
+  order(id: ID!): Order
+  orders(orderBy: OrderOrderByInput): [Order]!
+  vendor(withDetailedInventory: Boolean!): Vendor
+  vendorInventory(where: ItemWhereInput, ids: [ID]!): [Item]!
+  vendorUpdateItemQuery(id: ID): Item
+}
+  # itemToUpdate(id: ID!, where: ItemWhereInput)
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  permissions: [Permission!]!
+  cart: [CartItem!]!
+  orders: [OrderItem]
+}
+
+type Vendor {
+  id: ID!
+  companyName: String!
+  email: String!
+  permissions: [Permission!]!
+  inventory: [Item]!
+}
+
+input VendorUpdateItemInput {
+  id: ID!
+}
+
+# type AdminUser {
+#   id: ID!
+#   name: String!
+#   email: String!
+#   permissions: [Permission!]!
+#   cart: [CartItem!]!
+#   orders: [OrderItem]
+# }
+
+# input ItemCreateInput {
+#   title: String!
+#   description: String!
+#   image: String
+#   largeImage: String
+#   price: Int!
+#   cbdType: ItemCreatecbdTypeInput
+#   tags: ItemCreatetagsInput
+#   vendor: VendorCreateOneWithoutInventoryInput!
+# }

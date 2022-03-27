@@ -1,0 +1,108 @@
+enum Permission {
+  ADMIN
+  VENDOR
+  USER
+  ITEMCREATE
+  ITEMUPDATE
+  ITEMDELETE
+  PERMISSIONUPDATE
+}
+
+enum Tag {
+  CHOCOLATE
+  ORGANIC
+  VEGAN
+  GLUTENFREE
+  NUTFREE
+  PETS
+  DOG
+  CAT
+}
+
+enum Extract {
+  FULLSPECTRUM
+  BROADSPECTRUM
+  ISOLATE
+}
+
+type Vendor {
+  id: ID! @unique @id
+  companyName: String!
+  zipCode: Int!
+  name: String!
+  email: String! @unique
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
+  permissions: [Permission]
+  @scalarList(strategy:RELATION)
+  inventory: [Item]!
+}
+
+type User {
+  id: ID! @unique @id
+  name: String!
+  email: String! @unique
+  password: String!
+  resetToken: String
+  resetTokenExpiry: String
+  permissions: [Permission]
+  @scalarList(strategy:RELATION)
+  cart: [CartItem!]!
+}
+
+type Item {
+  id: ID! @id
+  title: String!
+  description: String!
+  image: String
+  largeImage: String
+  price: Int!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+  cbdType: [Extract]!
+  @scalarList(strategy:RELATION)
+  tags: [Tag]!
+  @scalarList(strategy:RELATION)
+  vendor: Vendor!
+}
+
+type CartItem {
+  id: ID! @id @unique
+  quantity: Int! @default(value:1)
+  item: Item
+  user: User!
+}
+
+type OrderItem {
+  id: ID! @id @unique
+  title: String!
+  description: String!
+  image: String!
+  largeImage: String!
+  price: Int!
+  quantity: Int! @default(value: 1)
+  user: User
+}
+
+type Order {
+  id: ID! @id @unique
+  items: [OrderItem!]!
+  total: Int!
+  user: User
+  charge: String!
+  address: OrderAddress!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type OrderAddress {
+  id: ID! @id @unique
+  addressLineA: String!
+  addressLineB: String!
+  city: String!
+  state: String!
+  zipCode: Int!
+}
