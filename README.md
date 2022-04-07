@@ -1,6 +1,6 @@
 # Happy Cookies
 
-Example project using:
+Ecommerce web appilcation to buy/sell cookies using:
 React, Apollo, Next.js, GraphQl, and Prisma
 
 Other tools:
