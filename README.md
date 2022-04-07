@@ -1,6 +1,6 @@
 # Happy Cookies
 
-Ecommerce web appilcation to buy/sell cookies using:
+Ecommerce web application to buy/sell cookies using:
 React, Apollo, Next.js, GraphQl, and Prisma
 
 Other tools:
